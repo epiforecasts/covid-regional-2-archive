@@ -19,24 +19,21 @@ require(data.table)
 
 NCoVUtils::reset_cache()
 
-cases <- get_colombia_regional_cases() %>%
+cases <- get_russia_regional_cases() %>%
   dplyr::select(date, region, region_code = iso_3166_2, cases) %>%
   dplyr::filter(!is.na(cases))
-  
-
 
 region_codes <- cases %>%
   dplyr::select(region, region_code) %>%
   unique()
 
-saveRDS(region_codes, "colombia/data/region_codes.rds")
+saveRDS(region_codes, "russia/data/region_codes.rds")
 
 cases <- cases %>%
   dplyr::rename(local = cases) %>%
   dplyr::mutate(imported = 0) %>%
   tidyr::gather(key = "import_status", value = "confirm", local, imported) %>% 
   tidyr::drop_na(region)
-
 
 # Shared delay ------------------------------------------------------------
 
@@ -50,13 +47,12 @@ if (!interactive()){
 future::plan("multiprocess", workers = round(future::availableCores() / 3))
 
 
-
 # Run pipeline ----------------------------------------------------
 
 EpiNow::regional_rt_pipeline(
   cases = cases,
   delay_defs = delay_defs,
-  target_folder = "colombia/regional",
+  target_folder = "russia/regional",
   horizon = 14,
   approx_delay = TRUE,
   report_forecast = TRUE,
@@ -68,7 +64,7 @@ EpiNow::regional_rt_pipeline(
 
 # Summarise results -------------------------------------------------------
 
-EpiNow::regional_summary(results_dir = "colombia/regional",
-                         summary_dir = "colombia/regional-summary",
+EpiNow::regional_summary(results_dir = "russia/regional",
+                         summary_dir = "russia/regional-summary",
                          target_date = "latest",
                          region_scale = "Region")
