@@ -8,10 +8,6 @@ require(dplyr, quietly = TRUE)
 require(tidyr, quietly = TRUE)
 require(magrittr, quietly = TRUE)
 require(future.apply, quietly = TRUE)
-require(fable, quietly = TRUE)
-require(fabletools, quietly = TRUE)
-require(feasts, quietly = TRUE)
-require(urca, quietly = TRUE)
 require(data.table)
 
 
@@ -47,7 +43,7 @@ if (!interactive()){
   options(future.fork.enable = TRUE)
 }
 
-future::plan("multiprocess", workers = round(future::availableCores() / 3))
+future::plan("multiprocess", workers = round(future::availableCores() / 2))
 
 
 
