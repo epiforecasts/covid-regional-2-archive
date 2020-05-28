@@ -56,8 +56,9 @@ EpiNow::regional_rt_pipeline(
   horizon = 14,
   approx_delay = TRUE,
   report_forecast = TRUE,
-  forecast_model = function(...){EpiSoon::forecastHybrid_model(
-    model_params = list(models = "aeftz", weights = "equal"),
+  forecast_model = function(y, ...){EpiSoon::forecastHybrid_model(
+    y = y[max(1, length(y) - 21):length(y)],
+    model_params = list(models = "aefz", weights = "equal"),
     forecast_params = list(PI.combination = "mean"), ...)}
 )
 
